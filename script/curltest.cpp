@@ -20,11 +20,16 @@ int main(void)
      the given file name when curl_easy_perform() is called. */ 
   curl_formadd(&formpost,
                &lastptr,
-               CURLFORM_COPYNAME, "picture[image]",
+               CURLFORM_COPYNAME, "attendance[picture][image]",
                CURLFORM_FILE, "photo.jpg",
                CURLFORM_END);
  
   /* Fill in the submit field too, even if this is rarely needed */ 
+  curl_formadd(&formpost,
+               &lastptr,
+               CURLFORM_COPYNAME, "attendance[student_id]",
+               CURLFORM_COPYCONTENTS, "2",
+               CURLFORM_END);
   curl_formadd(&formpost,
                &lastptr,
                CURLFORM_COPYNAME, "submit",
@@ -40,7 +45,7 @@ int main(void)
   if(curl && multi_handle) {
  
     /* what URL that receives this POST */ 
-    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:3000/students/6/pictures");
+    curl_easy_setopt(curl, CURLOPT_URL, "http://overpl.us:3000/courses/1/lectures/30/attendances.json");
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
  
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
@@ -102,7 +107,16 @@ int main(void)
         break;
       }
     } while(still_running);
- 
+
+    int ct;
+    CURLcode res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ct);
+
+    if ((CURLE_OK == res) && ct) {
+        printf("We received HTTP_CODE: %d\n", ct);
+    } else {
+        printf("tq\n");
+    }
+
     curl_multi_cleanup(multi_handle);
  
     /* always cleanup */ 
