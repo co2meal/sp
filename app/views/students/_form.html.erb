@@ -1,0 +1,46 @@
+<%
+  if not defined? readonly
+    readonly = false
+  end
+%>
+
+<%= form_for @student, html: {class: "form form-horizontal"}  do |f| %>
+  <% if @student.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student from being saved:</h2>
+
+      <ul>
+      <% @student.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :name, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :name, :readonly => readonly%>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :sin, "Student Number", :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :sin, :readonly => readonly %>
+      </div>
+    </div>
+    <%
+      if not readonly
+    %>
+      <div class="control-group">
+        <div class="controls">
+          <%= f.submit %>
+        </div>
+    <%
+      end
+    %>
+
+    </div>
+  </fieldset>
+<% end %>

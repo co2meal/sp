@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>ClassTime:</b>
+  <%= @lecture.classtime %>
+</p>
+
+<h2>Attendances</h2>
+
+<table>
+  <tr>
+    <th>student</th>
+    <th>status</th>
+    <th>created_at</th>
+    <th></th>
+  </tr>
+
+<% @lecture.attendances.each do |attendance| %>
+  <tr>
+    <td><%= attendance.student.sin %></td>
+    <td><%= attendance.status %></td>
+    <td><%= attendance.created_at %></td>
+    <td><%= link_to 'Show', [@course, @lecture, attendance] %></td>
+  </tr>
+<% end %>
+</table>
+
+
+
+<%= link_to 'Back', course_path(@course) %>

@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+<h1><%= @student.name %></h1>
+
+<%= render 'form', readonly: true %>
+
+<h2>Pictures</h2>
+<div>
+  <%= render :partial => 'picture', :collection => @student.pictures %>
+
+  <%= form_for [@student, @new_student_picture], html: {class: "form form-horizontal"} do |f| %>
+    <fieldset>
+      <legend>Do you want to add picture?</legend>
+      <div class="control-group">
+        <%= f.label :image, class: "control-label" %>
+        <div class="controls">
+          <%= f.file_field :image %>
+          <%= f.hidden_field :image_cache %>
+
+        </div>
+
+      </div>
+      <div class="control-group">
+        <%= f.label :remote_image_url, class: "control-label" %>
+        <div class="controls">
+          <%= f.text_field :remote_image_url %>
+        </div>
+
+      </div>
+      <div class="controls">
+        <%= f.submit %>
+      </div>
+    </fieldset>
+
+  <% end %>
+</div>
+
+
+
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'Back', students_path %>

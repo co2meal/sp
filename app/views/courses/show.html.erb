@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @course.name %>
+</p>
+
+<h2>Lectures</h2>
+
+<table>
+  <tr>
+    <th>Class Time</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @course.lectures.each do |lecture| %>
+  <tr>
+    <td><%= lecture.classtime %></td>
+    <td><%= link_to 'Show', [@course, lecture] %></td>
+    <td><%= link_to 'Edit', edit_course_lecture_path([@course, lecture]) %></td>
+  </tr>
+<% end %>
+</table>
+
+
+
+<%= link_to 'Edit', edit_course_path(@course) %> |
+<%= link_to 'Back', courses_path %>
