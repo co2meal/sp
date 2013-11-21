@@ -9,6 +9,7 @@
 
 <table>
   <tr>
+    <th>picture</th>
     <th>student</th>
     <th>status</th>
     <th>created_at</th>
@@ -17,6 +18,7 @@
 
 <% @lecture.attendances.each do |attendance| %>
   <tr>
+    <td><%= image_tag(attendance.picture.image.url) %></td>
     <td><%= attendance.student.sin %></td>
     <td><%= attendance.status %></td>
     <td><%= attendance.created_at %></td>

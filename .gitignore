@@ -23,6 +23,7 @@ capybara-*.html
 /tmp
 /db/*.sqlite3
 /public/system
+/public/uploads
 /coverage/
 /spec/tmp
 **.orig
@@ -41,3 +42,5 @@ config/initializers/secret_token.rb
 .rvmrc
 
 .DS_Store
+
+

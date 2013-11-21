@@ -6,9 +6,9 @@ class Attendance < ActiveRecord::Base
 
   has_one :picture, as: :imageable
 
-  validates :student_id, presence: true
-  validates :lecture_id, presence: true
-  # validates :picture, presence: true
+  validates_presence_of :student
+  validates_presence_of :lecture
+  validates :picture, presence: true
 
   validates :status, inclusion: { in: %w(warning absent late success) }
 
