@@ -13,6 +13,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+*.out
 
 *.rbc
 *.sassc
@@ -42,5 +43,4 @@ config/initializers/secret_token.rb
 .rvmrc
 
 .DS_Store
-
 
