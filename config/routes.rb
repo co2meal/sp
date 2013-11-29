@@ -3,9 +3,8 @@ Sp::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   resources :courses do
-    resources :lectures do
-      resources :attendances
-    end
+    resources :attendances
+    resources :lectures
   end
 
   resources :students do

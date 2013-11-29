@@ -12,6 +12,7 @@
     <th>picture</th>
     <th>student</th>
     <th>status</th>
+    <th>authenticated</th>
     <th>created_at</th>
     <th></th>
   </tr>
@@ -21,8 +22,9 @@
     <td><%= image_tag(attendance.picture.image.url) %></td>
     <td><%= attendance.student.sin %></td>
     <td><%= attendance.status %></td>
+    <td><%= attendance.authenticated %></td>
     <td><%= attendance.created_at %></td>
-    <td><%= link_to 'Show', [@course, @lecture, attendance] %></td>
+    <td><%= link_to 'Show', [@course, attendance] %></td>
   </tr>
 <% end %>
 </table>

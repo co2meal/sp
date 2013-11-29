@@ -6,12 +6,31 @@ class AttendancesController < InheritedResources::Base
   end
 
   def create
+    tempfile = Tempfile.new("photoupload")
+    tempfile.binmode
+    tempfile << request.body.read
+    tempfile.rewind
+    photo_params = params.slice(:filename, :type, :head).merge(:tempfile => tempfile)
+    photo = ActionDispatch::Http::UploadedFile.new(photo_params)
+
     params[:picture] = params[:attendance].delete(:picture)
     @course= Course.find(params[:course_id])
-    @lecture = Lecture.find(params[:lecture_id])
+    # @lecture = Lecture.find(params[:lecture_id])
+    @lecture = @course.current_lecture
+
+    unless @lecture
+      respond_to do |format|
+        format.json { render json: {error: "No current lecture error"}, status: :unprocessable_entity }
+      end
+      return
+    end
+
     @attendance = @lecture.attendances.new(params[:attendance])
+    @attendance.student = Student.find_by_sin(params[:attendance][:student_id])
+
     @attendance.build_picture
-    @attendance.picture.image = params[:picture][:image]
+    # @attendance.picture.image = params[:picture][:image]
+    @attendance.picture.image = photo
 
     respond_to do |format|
       if @attendance.save

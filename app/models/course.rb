@@ -17,8 +17,8 @@ class Course < ActiveRecord::Base
       "F" => 16.hours + 30.minutes
     }
 
-    begin_date = DateTime.new(2013, 9, 1)
-    end_date   = DateTime.new(2013, 12, 31)
+    begin_date = DateTime.new(2013, 9, 1, 0,0,0, '+9')
+    end_date   = DateTime.new(2013, 12, 31, 0,0,0, '+9')
 
     date = begin_date
     while date <= end_date
@@ -30,7 +30,11 @@ class Course < ActiveRecord::Base
           c.lectures.create(:classtime => date + timecode_to_time[timecode])
         end
       end
-      date = date.next_day
+      date = date + 24.hours
     end
+  end
+
+  def current_lecture
+    lectures.where("? < classtime AND classtime < ?", Time.now - 75.minutes, Time.now + 10.minutes).last
   end
 end
