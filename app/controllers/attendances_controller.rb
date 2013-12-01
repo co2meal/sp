@@ -15,7 +15,6 @@ class AttendancesController < InheritedResources::Base
 
     params[:picture] = params[:attendance].delete(:picture)
     @course= Course.find(params[:course_id])
-    # @lecture = Lecture.find(params[:lecture_id])
     @lecture = @course.current_lecture
 
     unless @lecture
@@ -25,12 +24,22 @@ class AttendancesController < InheritedResources::Base
       return
     end
 
+
+
     @attendance = @lecture.attendances.new(params[:attendance])
     @attendance.student = Student.find_by_sin(params[:attendance][:student_id])
+
+    unless @attendance.student
+      respond_to do |format|
+        format.json { render json: {error: "No student error"}, status: :unprocessable_entity }
+      end
+      return
+    end
 
     @attendance.build_picture
     # @attendance.picture.image = params[:picture][:image]
     @attendance.picture.image = photo
+    #@attendance.picture.save!
 
     respond_to do |format|
       if @attendance.save

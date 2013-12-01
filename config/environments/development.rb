@@ -34,4 +34,6 @@ Sp::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  config.asset_host = 'http://overpl.us:3000'
 end

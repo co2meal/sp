@@ -27,9 +27,28 @@ class Attendance < ActiveRecord::Base
 
   before_validation(on: :create) do |atte|
     atte.authenticated = "warning"
-    client = Face.get_client(:api_key => 'da7eb16e392f446496608518995f4678', :api_secret => '954b9ac8bb944679b1b1d96443b4cb7b')
-    uid = student.id + "@aeap"
-    url = "nodap"
-    res = client.faces_recognize(uids: [uid], urls: [urls])
+
+    confidences = nil
+    5.times do
+      if confidences.nil?
+        begin
+          client = Face.get_client(:api_key => 'da7eb16e392f446496608518995f4678', :api_secret => '954b9ac8bb944679b1b1d96443b4cb7b')
+          uid = student.sin + "@aeap"
+          url = "http://overpl.us:3000" + atte.picture.image.url
+          Rails.logger.info "uids: #{uid}, urls: #{url}"
+          res = client.faces_recognize(uids: [uid], urls: [url])
+          Rails.logger.info "recognize res : #{res}"
+          confidences = res["photos"].first["tags"].map {|tag| tag["uids"][0]["confidence"] }
+          Rails.logger.info "confidences : #{confidences}"
+        rescue
+          Rails.logger.info "Model Attendance Rescued"
+          sleep(1)
+        end
+      end
+    end
+    if confidences.nil?
+      raise "Face communication error"
+    end
+    atte.authenticated = "success" if confidences.count { |c| c > 50 } > 0
   end
 end
